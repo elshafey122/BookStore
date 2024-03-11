@@ -1,0 +1,43 @@
+﻿
+@model Category
+
+<form method="post" asp-action="@(Model.Id>0?"Edit":"Create")">
+
+    <div class="border p-3 mt-3">
+        <div class="row pb-1 ">
+            <h2 class="text-primary">@(Model.Id > 0 ? "Edit" : "Create") Category</h2>
+            <hr/>
+        </div>
+         
+        <input type="hidden" asp-for="@Model.Id" value="@Model.Id"/>
+        <div asp-validation-summary="All" class="text-danger"> </div>
+        <div class="row mb-2">
+            <label class="p-0 mb-1" asp-for="@Model.Name"></label>
+            <input class="form-control" type="text" asp-for="@Model.Name" value="@Model.Name"/>
+            <span asp-validation-for="@Model.Name" class="text-danger"></span>
+        </div>
+        <div class="row mb-2  ">
+            <label class="p-0 mb-1" asp-for="@Model.DisplayOrder"></label>
+            <input class="form-control" type="text" asp-for="@Model.DisplayOrder" value="@Model.DisplayOrder"/>
+            <span asp-validation-for="@Model.DisplayOrder" class="text-danger"></span>
+        </div>
+        <div class="row p-0 p-2">
+            <div class="col-6 col-md-3">
+            <button class="btn btn-primary form-control" type="submit">Submit</button>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <a asp-controller="Category" asp-action="Index" class="btn btn-secondary form-control">Back</a>
+            </div>
+        </div>
+        
+    </div>
+
+</form>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+}
+
+
