@@ -10,16 +10,19 @@ namespace Ecommerce.Web.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public ProductController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public ProductController(IUnitOfWork unitOfWork , IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
-            var Products = _unitOfWork.Products.GetAll();
+            var Products = _unitOfWork.Products.GetAll(IncludeProperites:"Category");
             return View(Products);
         }
-        public async Task<IActionResult> Create()
+
+        public async Task<IActionResult> Upsert(int? ProductId)
         {
             //IEnumerable<SelectListItem> CategoryList = categories.Select(u => new SelectListItem
             //{
@@ -28,7 +31,6 @@ namespace Ecommerce.Web.Areas.Admin.Controllers
             //});
             ////ViewBag.Categories = CategoryList;
             ////ViewData["Categories"]= CategoryList; // dictionary type
-            ///
             IEnumerable<SelectListItem> categories = _unitOfWork.Categories.GetAll().Select(x => new SelectListItem
             {
                 Text = x.Name,
@@ -39,14 +41,34 @@ namespace Ecommerce.Web.Areas.Admin.Controllers
                 Product = new Product(),
                 Categories = categories
             };
+            if(ProductId == null || ProductId == 0)
+            {
+               return View("ProductForm", productvm);
+            }
+            var product = _unitOfWork.Products.Get(x => x.Id == ProductId);
+            productvm.Product = product;
             return View("ProductForm", productvm);
         }
+
+
         [HttpPost]
-        public async Task<IActionResult> Create(ProductViewModel ProductVm)
+        public async Task<IActionResult> Upsert(ProductViewModel ProductVm,IFormFile file)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Products.Add(ProductVm.Product);
+                if (file != null)
+                {
+                    var filename = AddImage(ProductVm,file);
+                    ProductVm.Product.ImageUrl = @"\Images\Products\" + filename;
+                }
+                if(ProductVm.Product.Id==null || ProductVm.Product.Id == 0)
+                {
+                    _unitOfWork.Products.Add(ProductVm.Product);
+                }
+                else
+                {
+                    _unitOfWork.Products.Update(ProductVm.Product);
+                }
                 _unitOfWork.Complete();
                 TempData["Success"] = "Product created successfully";
                 return RedirectToAction(nameof(Index));
@@ -57,56 +79,72 @@ namespace Ecommerce.Web.Areas.Admin.Controllers
                 Value = x.Id.ToString()
             });
             return View("ProductForm", ProductVm);
-    }
+        }
+        
+        //public IActionResult Delete(int? ProductId)
+        //{
+        //    var Product = _unitOfWork.Products.Get(x => x.Id == ProductId);
+        //    if (Product == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    _unitOfWork.Products.Remove(Product);
+        //    _unitOfWork.Complete();
+        //    TempData["Success"] = "Product deleted successfully";
+        //    return RedirectToAction(nameof(Index));
+        //}
 
-        public IActionResult Edit(int? ProductId)
+
+        [HttpGet]
+        public IActionResult GetAll()
         {
-            var product = _unitOfWork.Products.Get(x => x.Id == ProductId);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            ProductViewModel productViewModel = new()
-            {
-                Product = product,
-                Categories = _unitOfWork.Categories.GetAll().Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.Id.ToString()
-                })
-            };
-            return View("ProductForm", productViewModel);
+            var Products = _unitOfWork.Products.GetAll(IncludeProperites: "Category");
+            return Json(new {data=Products});
         }
 
-        [HttpPost]
-        public IActionResult Edit(ProductViewModel ProductVm)
+        [HttpDelete]
+        public IActionResult Remove(int? id)
         {
-            if (ModelState.IsValid)
+            var product = _unitOfWork.Products.Get(x=>x.Id== id);
+            if(product == null)
             {
-                _unitOfWork.Products.Update(ProductVm.Product);
-                _unitOfWork.Complete();
-                TempData["Success"] = "Product Updated successfully";
-                return RedirectToAction(nameof(Index));
+                return Json(new { success = false, message = "error while deleting" });
             }
-            ProductVm.Categories = _unitOfWork.Categories.GetAll().Select(x => new SelectListItem
+            var oldImage = Path.Combine(_webHostEnvironment.WebRootPath, product.ImageUrl);
+            if (System.IO.Path.Exists(oldImage))
             {
-                Text = x.Name,
-                Value = x.Id.ToString()
-            });
-            return View("ProductForm", ProductVm);
-        }
-        public IActionResult Delete(int? ProductId)
-        {
-            var Product = _unitOfWork.Products.Get(x => x.Id == ProductId);
-            if (Product == null)
-            {
-                return NotFound();
+                System.IO.File.Delete(oldImage);    
             }
-            _unitOfWork.Products.Remove(Product);
+            _unitOfWork.Products.Remove(product);
             _unitOfWork.Complete();
-            TempData["Success"] = "Product deleted successfully";
-            return RedirectToAction(nameof(Index));
+            return Json(new { success = true, message = "deleted successfully" });
         }
 
+
+
+        private string AddImage(ProductViewModel ProductVm,IFormFile file)
+        {
+            var wwwroot = _webHostEnvironment.WebRootPath;
+            string filename = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var Productpath = Path.Combine(wwwroot, @"Images\Products\");
+
+            if (!string.IsNullOrEmpty(ProductVm.Product.ImageUrl))
+            {
+                var oldpath = Path.Combine(wwwroot, ProductVm.Product.ImageUrl);
+                if (System.IO.File.Exists(oldpath))
+                {
+                    System.IO.File.Delete(oldpath);
+                }
+            }
+            using (var filestream = new FileStream(Path.Combine(Productpath + filename), FileMode.Create))
+            {
+                file.CopyTo(filestream);
+            }
+            return filename;
+        }
+
+
     }
+
+    
 }

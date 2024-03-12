@@ -24,16 +24,30 @@ namespace Ecommerce.Repositories.Repositories
             _dbSet.Add(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> expression)
+        public T Get(Expression<Func<T, bool>> expression, string? IncluseProperites = null)
         {
             IQueryable<T> query = _dbSet;
+            if (!string.IsNullOrEmpty(IncluseProperites))
+            {
+                foreach (var includeitem in IncluseProperites.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeitem);
+                }
+            }
             query=query.Where(expression);
             return query.FirstOrDefault();
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll(string? IncluseProperites = null)
         {
             IQueryable<T> query = _dbSet;
+            if (!string.IsNullOrEmpty(IncluseProperites))
+            {
+                foreach (var includeitem in IncluseProperites.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeitem);
+                }
+            }
             return query.ToList();
         }
 

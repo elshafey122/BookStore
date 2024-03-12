@@ -1,7 +1,7 @@
 ﻿@using Ecommerce.Model.ViewModels
 @model ProductViewModel
 
-<form method="post" asp-action="@(Model.Product.Id>0?"Edit":"Create")">
+<form method="post" asp-action="Upsert" enctype="multipart/form-data" >
 
     <div class="border p-3 mt-3">
         <div class="row pb-1 ">
@@ -10,89 +10,107 @@
         </div>
 
         <input type="hidden" asp-for="@Model.Product.Id" value="@Model.Product.Id" />
+        <input type="hidden" asp-for="@Model.Product.ImageUrl"/>
         <div asp-validation-summary="All" class="text-danger"> </div>
 
-        <div class="row mb-2">
-            <label class="p-0 mb-1" asp-for="@Model.Product.Title"></label>
-            <input class="form-control" type="text" asp-for="@Model.Product.Title" value="@Model.Product.Title" />
-            <span asp-validation-for="@Model.Product.Title" class="text-danger"></span>
-        </div>
-        <div class="row mb-2  ">
-            <label class="p-0 mb-1" asp-for="@Model.Product.Author"></label>
-            <input class="form-control" type="text" asp-for="@Model.Product.Author" value="@Model.Product.Author" />
-            <span asp-validation-for="@Model.Product.Author" class="text-danger"></span>
-        </div>
+        <div class="row">
+            <div class="col-10">
+                <div class="row mb-2">
+                    <label class="p-0 mb-1" asp-for="@Model.Product.Title"></label>
+                    <input class="form-control" type="text" asp-for="@Model.Product.Title" value="@Model.Product.Title" />
+                    <span asp-validation-for="@Model.Product.Title" class="text-danger"></span>
+                </div>
+                <div class="row mb-2  ">
+                    <label class="p-0 mb-1" asp-for="@Model.Product.Author"></label>
+                    <input class="form-control" type="text" asp-for="@Model.Product.Author" value="@Model.Product.Author" />
+                    <span asp-validation-for="@Model.Product.Author" class="text-danger"></span>
+                </div>
 
-        <div class="row mb-2  ">
-            <label class="p-0 mb-1" asp-for="@Model.Product.Description"></label>
-            <textarea class="form-control" type="text" asp-for="@Model.Product.Description" value="@Model.Product.Description"></textarea>
-            <span asp-validation-for="@Model.Product.Description" class="text-danger"></span>
-        </div>
+                <div class="row mb-2  ">
+                    <label class="p-0 mb-1" asp-for="@Model.Product.Description"></label>
+                    <textarea class="form-control" type="text" asp-for="@Model.Product.Description" value="@Model.Product.Description"></textarea>
+                    <span asp-validation-for="@Model.Product.Description" class="text-danger"></span>
+                </div>
 
-        <div class="row mb-2  ">
-            <label class="p-0 mb-1" asp-for="@Model.Product.ISBN"></label>
-            <input class="form-control" type="text" asp-for="@Model.Product.ISBN" value="@Model.Product.ISBN" />
-            <span asp-validation-for="@Model.Product.ISBN" class="text-danger"></span>
-        </div>
+                <div class="row mb-2  ">
+                    <label class="p-0 mb-1" asp-for="@Model.Product.ISBN"></label>
+                    <input class="form-control" type="text" asp-for="@Model.Product.ISBN" value="@Model.Product.ISBN" />
+                    <span asp-validation-for="@Model.Product.ISBN" class="text-danger"></span>
+                </div>
 
-        <div class="row mb-2  ">
-            <label class="p-0 mb-1" asp-for="@Model.Product.ListPrice"></label>
-            <input class="form-control" type="text" asp-for="@Model.Product.ListPrice" value="@Model.Product.ListPrice" />
-            <span asp-validation-for="@Model.Product.ListPrice" class="text-danger"></span>
-        </div>
+                <div class="row mb-2  ">
+                    <label class="p-0 mb-1" asp-for="@Model.Product.ListPrice"></label>
+                    <input class="form-control" type="text" asp-for="@Model.Product.ListPrice" value="@Model.Product.ListPrice" />
+                    <span asp-validation-for="@Model.Product.ListPrice" class="text-danger"></span>
+                </div>
 
-        <div class="row mb-2  ">
-            <label class="p-0 mb-1" asp-for="@Model.Product.Price"></label>
-            <input class="form-control" type="text" asp-for="@Model.Product.Price" value="@Model.Product.Price" />
-            <span asp-validation-for="@Model.Product.Price" class="text-danger"></span>
-        </div>
+                <div class="row mb-2  ">
+                    <label class="p-0 mb-1" asp-for="@Model.Product.Price"></label>
+                    <input class="form-control" type="text" asp-for="@Model.Product.Price" value="@Model.Product.Price" />
+                    <span asp-validation-for="@Model.Product.Price" class="text-danger"></span>
+                </div>
 
-        <div class="row mb-2  ">
-            <label class="p-0 mb-1" asp-for="@Model.Product.Price50"></label>
-            <input class="form-control" type="text" asp-for="@Model.Product.Price50" value="@Model.Product.Price50" />
-            <span asp-validation-for="@Model.Product.Price50" class="text-danger"></span>
-        </div>
+                <div class="row mb-2  ">
+                    <label class="p-0 mb-1" asp-for="@Model.Product.Price50"></label>
+                    <input class="form-control" type="text" asp-for="@Model.Product.Price50" value="@Model.Product.Price50" />
+                    <span asp-validation-for="@Model.Product.Price50" class="text-danger"></span>
+                </div>
 
-        <div class="row mb-2  ">
-            <label class="p-0 mb-1" asp-for="@Model.Product.Price100"></label>
-            <input class="form-control" type="text" asp-for="@Model.Product.Price100" value="@Model.Product.Price100" />
-            <span asp-validation-for="@Model.Product.Price100" class="text-danger"></span>
-        </div>
+                <div class="row mb-2  ">
+                    <label class="p-0 mb-1" asp-for="@Model.Product.Price100"></label>
+                    <input class="form-control" type="text" asp-for="@Model.Product.Price100" value="@Model.Product.Price100" />
+                    <span asp-validation-for="@Model.Product.Price100" class="text-danger"></span>
+                </div>
 
-        @* <div class="row mb-2">
-            <label class="p-0 mb-1" asp-for="@Model.CategoryId"></label>
-            <select asp-for="@Model.CategoryId" asp-items="ViewBag.Categories" class="form-select">
+                @* <div class="row mb-2">
+                <label class="p-0 mb-1" asp-for="@Model.CategoryId"></label>
+                <select asp-for="@Model.CategoryId" asp-items="ViewBag.Categories" class="form-select">
                 <option disabled selected>--select category--</option>
-            </select>
-            <span asp-validation-for="@Model.CategoryId" class="text-danger"></span>
-        </div> *@
+                </select>
+                <span asp-validation-for="@Model.CategoryId" class="text-danger"></span>
+                </div> *@
 
-        @* <div class="row mb-2">
-            <label class="p-0 mb-1" asp-for="@Model.CategoryId"></label>
-            <select asp-for="@Model.CategoryId" asp-items=@(ViewData["Categories"] as IEnumerable<SelectListItem>) class="form-select">
+                @* <div class="row mb-2">
+                <label class="p-0 mb-1" asp-for="@Model.CategoryId"></label>
+                <select asp-for="@Model.CategoryId" asp-items=@(ViewData["Categories"] as IEnumerable<SelectListItem>) class="form-select">
                 <option disabled selected>--select category--</option>
-            </select>
-            <span asp-validation-for="@Model.CategoryId" class="text-danger"></span>
-        </div> *@
+                </select>
+                <span asp-validation-for="@Model.CategoryId" class="text-danger"></span>
+                </div> *@
 
-        <div class="row mb-2">
-        <label class="p-0 mb-1" asp-for="@Model.Product.CategoryId"></label>
-            <select asp-for="@Model.Product.CategoryId" asp-items=@Model.Categories class="form-select">
-               <option disabled selected>--select category--</option>
-            </select>
-            <span asp-validation-for="@Model.Product.CategoryId" class="text-danger"></span>
-        </div>
+                <div class="row mb-2">
+                    <label class="p-0 mb-1" asp-for="@Model.Product.CategoryId"></label>
+                    <select asp-for="@Model.Product.CategoryId" asp-items=@Model.Categories class="form-select">
+                        <option disabled selected>--select category--</option>
+                    </select>
+                    <span asp-validation-for="@Model.Product.CategoryId" class="text-danger"></span>
+                </div>
+
+                <div class="row mb-2  ">
+                    <label class="p-0 mb-1" asp-for="@Model.Product.ImageUrl"></label>
+                    <input class="form-control" type="file" name="file" asp-for="@Model.Product.ImageUrl" value="@Model.Product.ImageUrl" />
+                    <span asp-validation-for="@Model.Product.ImageUrl" class="text-danger"></span>
+                </div>
 
 
-        <div class="row p-0 p-2">
-            <div class="col-6 col-md-3">
-                <button class="btn btn-primary form-control" type="submit">Submit</button>
+                <div class="row p-0 p-2">
+                    <div class="col-6 col-md-3">
+                        <button class="btn btn-primary form-control" type="submit">@(Model.Product.Id > 0 ? "Update" : "Create")</button>
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary form-control">Back</a>
+                    </div>
+                </div>
             </div>
 
-            <div class="col-6 col-md-3">
-                <a asp-controller="Product" asp-action="Index" class="btn btn-secondary form-control">Back</a>
+            <div class="col-2">
+                <img src="@Model.Product.ImageUrl" width="100%"
+                     style="border-radius:5px; border:1px solid #bbb9b9" />
             </div>
         </div>
+
+        
 
     </div>
 
