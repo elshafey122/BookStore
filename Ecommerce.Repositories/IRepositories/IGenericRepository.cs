@@ -9,7 +9,8 @@ namespace Ecommerce.Repositories.IRepositories
 {
     public interface IGenericRepository<T> where T:class 
     {
-        IEnumerable<T> GetAll(string? IncludeProperites=null);
+        IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter,string? IncludeProperites=null);
+        IEnumerable<T> GetAll(string? IncludeProperites = null);
         T Get(Expression<Func<T,bool>> expression, string? IncludeProperites = null);
         void Add(T entity);
         void Remove(T entity);

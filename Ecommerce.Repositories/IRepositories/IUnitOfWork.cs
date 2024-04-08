@@ -12,7 +12,13 @@ namespace Ecommerce.Repositories.IRepositories
     {
         public ICategoryRepository Categories { get; }
         public IProductRepository Products { get; }
+        public ICompanyRepository Companies { get; }
+        public IShoppingCartRepository ShoppingCarts { get; }
+        public IApplicationUserRepository ApplicationUsers { get; }
+        public IOrderHeader OrderHeaders { get; }
+		public IOrderDetails OrderDetails { get; }
 
-        int Complete();
+
+		int Complete();
     }
 }

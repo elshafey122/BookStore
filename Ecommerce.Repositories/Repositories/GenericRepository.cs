@@ -1,6 +1,7 @@
 ﻿using Ecommerce.Repositories.Data;
 using Ecommerce.Repositories.IRepositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,23 +25,31 @@ namespace Ecommerce.Repositories.Repositories
             _dbSet.Add(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> expression, string? IncluseProperites = null)
+        public T Get(Expression<Func<T, bool>> filter, string? IncludeProperites = null)
         {
+           
             IQueryable<T> query = _dbSet;
-            if (!string.IsNullOrEmpty(IncluseProperites))
+            if (filter != null)
             {
-                foreach (var includeitem in IncluseProperites.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                query = query.Where(filter);
+            }
+            if (!string.IsNullOrEmpty(IncludeProperites))
+            {
+                foreach (var includeitem in IncludeProperites.Split(',', StringSplitOptions.RemoveEmptyEntries))
                 {
                     query = query.Include(includeitem);
                 }
             }
-            query=query.Where(expression);
             return query.FirstOrDefault();
         }
 
-        public IEnumerable<T> GetAll(string? IncluseProperites = null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? IncluseProperites = null)
         {
             IQueryable<T> query = _dbSet;
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
             if (!string.IsNullOrEmpty(IncluseProperites))
             {
                 foreach (var includeitem in IncluseProperites.Split(',', StringSplitOptions.RemoveEmptyEntries))
@@ -50,6 +59,21 @@ namespace Ecommerce.Repositories.Repositories
             }
             return query.ToList();
         }
+
+        public IEnumerable<T> GetAll( string? IncludeProperites = null)
+        {
+            IQueryable<T> query = _dbSet;
+            if (!string.IsNullOrEmpty(IncludeProperites))
+            {
+                foreach (var includeitem in IncludeProperites.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeitem);
+                }
+            }
+            return query.ToList();
+        }
+
+       
 
         public void Remove(T entity)
         {

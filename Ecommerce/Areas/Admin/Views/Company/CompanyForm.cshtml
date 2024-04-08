@@ -1,0 +1,68 @@
+﻿
+@model Company
+
+<form method="post" asp-action="@(Model.Id>0?"Edit":"Create")">
+
+    <div class="border p-3 mt-3">
+        <div class="row pb-1 ">
+            <h2 class="text-primary">@(Model.Id > 0 ? "Edit" : "Create") Category</h2>
+            <hr/>
+        </div>
+         
+        <input type="hidden" asp-for="@Model.Id" value="@Model.Id"/>
+        <div asp-validation-summary="All" class="text-danger"> </div>
+        <div class="row mb-2">
+            <label class="p-0 mb-1" asp-for="@Model.Name"></label>
+            <input class="form-control" type="text" asp-for="@Model.Name" value="@Model.Name"/>
+            <span asp-validation-for="@Model.Name" class="text-danger"></span>
+        </div>
+        <div class="row mb-2  ">
+            <label class="p-0 mb-1" asp-for="@Model.StreetAddress"></label>
+            <input class="form-control" type="text" asp-for="@Model.StreetAddress" value="@Model.StreetAddress" />
+            <span asp-validation-for="@Model.StreetAddress" class="text-danger"></span>
+        </div>
+
+        <div class="row mb-2  ">
+            <label class="p-0 mb-1" asp-for="@Model.City"></label>
+            <input class="form-control" type="text" asp-for="@Model.City" value="@Model.City" />
+            <span asp-validation-for="@Model.City" class="text-danger"></span>
+        </div>
+
+        <div class="row mb-2  ">
+            <label class="p-0 mb-1" asp-for="@Model.State"></label>
+            <input class="form-control" type="text" asp-for="@Model.State" value="@Model.State" />
+            <span asp-validation-for="@Model.State" class="text-danger"></span>
+        </div>
+
+        <div class="row mb-2  ">
+            <label class="p-0 mb-1" asp-for="@Model.PostalCode"></label>
+            <input class="form-control" type="text" asp-for="@Model.PostalCode" value="@Model.PostalCode" />
+            <span asp-validation-for="@Model.PostalCode" class="text-danger"></span>
+        </div>
+
+        <div class="row mb-2  ">
+            <label class="p-0 mb-1" asp-for="@Model.PhoneNumber"></label>
+            <input class="form-control" type="text" asp-for="@Model.PhoneNumber" value="@Model.PhoneNumber" />
+            <span asp-validation-for="@Model.PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <div class="row p-0 p-2">
+            <div class="col-6 col-md-3">
+            <button class="btn btn-primary form-control" type="submit">Submit</button>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <a asp-controller="Category" asp-action="Index" class="btn btn-secondary form-control">Back</a>
+            </div>
+        </div>
+        
+    </div>
+
+</form>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+}
+
+

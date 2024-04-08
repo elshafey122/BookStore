@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@inject IHttpContextAccessor HttpContextAccessor;
+@{
+    var count = HttpContextAccessor.HttpContext.Session.GetInt32(SD.SessionCart);
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -23,7 +27,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav me-auto">
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
@@ -31,19 +35,43 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="Customer" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        @if (User.IsInRole(SD.Role_Admin))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Content Managment</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item text-black" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
+                                    <div class="dropdown-divider"></div>
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Content Managment</a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item text-black" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
-                                <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item text-black" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a>
+                                    <div class="dropdown-divider"></div>
 
-                                <a class="dropdown-item text-black" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a>
-                                <div class="dropdown-divider"></div>
-                            </div>
+                                    <a class="dropdown-item text-black" asp-area="Admin" asp-controller="Company" asp-action="Index">Company</a>
+
+                                </div>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="Admin" asp-controller="Order" asp-action="Index">
+                                @if(User.IsInRole(SD.Role_Admin)|| User.IsInRole(SD.Role_Employee))
+                                {
+                                    <span>Manage Orders</span>
+                                }
+                                else
+                                {
+                                    <span>Orders history</span>
+                                }
+                            </a>
                         </li>
-
+                        @if (User.IsInRole(SD.Role_Customer))
+                        {
+                            <a class="nav-link text-white" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                                <i class="bi bi-cart-fill"></i>
+                                (@count)
+                            </a>
+                        }
                     </ul>
+                    <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
@@ -67,5 +95,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+    
 </body>
 </html>
