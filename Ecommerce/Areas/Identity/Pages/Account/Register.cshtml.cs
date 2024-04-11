@@ -170,9 +170,9 @@ namespace Ecommerce.Web.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    if (!string.IsNullOrEmpty(Input.Role))
+                    if (!String.IsNullOrEmpty(Input.Role))
                     {
-                       await _userManager.AddToRoleAsync(user, Input.Role);
+                        await _userManager.AddToRoleAsync(user, Input.Role);
                     }
                     else
                     {

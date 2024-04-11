@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Ecommerce.Repositories.IRepositories
 {
-    public interface IApplicationUserRepository:IGenericRepository<ApplicationUser>
+    public interface ICoverTypeRepository:IGenericRepository<CoverType>
     {
-        public void Update(ApplicationUser user);
+        void Update(CoverType coverType);
     }
 }

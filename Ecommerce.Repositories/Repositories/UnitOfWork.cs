@@ -21,7 +21,8 @@ namespace Ecommerce.Repositories.Repositories
 
 		public IOrderDetails OrderDetails { get; private set; }
 
-		public UnitOfWork(ApplicationDbContext context)
+        public ICoverTypeRepository CoverType { get; set; }
+        public UnitOfWork(ApplicationDbContext context)
         {
             _context=context;
             Categories = new CategoryRepository(_context);
@@ -31,6 +32,7 @@ namespace Ecommerce.Repositories.Repositories
             ApplicationUsers = new ApplicationUserRepository(_context);
             OrderHeaders = new OrderHeaderRepository(_context);
             OrderDetails = new OrderDetailsRepository(_context);
+            CoverType = new CoverTypeRepository(_context);
         }
         public int Complete()
         {

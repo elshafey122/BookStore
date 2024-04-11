@@ -3,8 +3,6 @@ using Ecommerce.Repositories.IRepositories;
 using Ecommerce.Repositories.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using Ecommerce.Model.Models;
-using Microsoft.Build.Framework;
 using Ecommerce.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Stripe;
@@ -25,6 +23,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+builder.Services.Configure<TwilioSetting>(builder.Configuration.GetSection("Twilio"));
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddRazorPages();
@@ -34,6 +33,7 @@ builder.Services.AddSession(options => {
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

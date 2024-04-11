@@ -17,6 +17,7 @@ namespace Ecommerce.Repositories.IRepositories
         public IApplicationUserRepository ApplicationUsers { get; }
         public IOrderHeader OrderHeaders { get; }
 		public IOrderDetails OrderDetails { get; }
+        public ICoverTypeRepository CoverType{ get; }
 
 
 		int Complete();

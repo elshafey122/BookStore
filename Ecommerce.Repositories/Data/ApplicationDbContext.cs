@@ -17,6 +17,7 @@ namespace Ecommerce.Repositories.Data
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<OrderHeader> OrderHeaders { get; set; }
 		public DbSet<OrderDetails> OrderDetails { get; set; }
+        public DbSet<CoverType> coverTypes { get; set; }
 
 		public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 

@@ -60,5 +60,12 @@ namespace Ecommerce.Model.Models
         [ForeignKey(nameof(CategoryId))]
         public Category? Category { get; set; }
 
+        [Required]
+        [Display(Name = "Cover Type")]
+        public int CoverTypeId { get; set; }
+
+        [ValidateNever]
+        public CoverType CoverType { get; set; }
+
     }
 }

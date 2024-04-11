@@ -4,9 +4,12 @@ using Ecommerce.Repositories.IRepositories;
 using Ecommerce.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Stripe;
 using Stripe.Checkout;
 using System.Security.Claims;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
 
 namespace Ecommerce.Web.Areas.Customer.Controllers
 {
@@ -14,13 +17,14 @@ namespace Ecommerce.Web.Areas.Customer.Controllers
     [Authorize]
     public class CartController : Controller
     {
+        private TwilioSetting _twilioOptions {  get; set; }
         private readonly IUnitOfWork _unitOfWork;
-
         [BindProperty]
         public ShoppingCartViewModel ShoppingCartVM{ get; set; }
-        public CartController(IUnitOfWork unitOfWork)
+        public CartController(IUnitOfWork unitOfWork, IOptions<TwilioSetting> twilioptions)
         {
             _unitOfWork = unitOfWork;
+            _twilioOptions = twilioptions.Value;
         }
         public IActionResult Index()
         {
@@ -130,6 +134,20 @@ namespace Ecommerce.Web.Areas.Customer.Controllers
             List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCarts.GetAll(x => x.ApplicationUserId == fromheaderdb.ApplicationUserId).ToList();
             _unitOfWork.ShoppingCarts.RemoveRange(shoppingCarts);
             _unitOfWork.Complete();
+
+            TwilioClient.Init(_twilioOptions.AccountSid, _twilioOptions.AuthToken);
+            try
+            {
+                var message = MessageResource.Create(
+                    body: $"order placed your order id : {id}",
+                    from: new Twilio.Types.PhoneNumber(_twilioOptions.PhoneNumber),
+                    to: new Twilio.Types.PhoneNumber(fromheaderdb.PhoneNumber)
+                    );
+            }
+            catch(Exception ex)
+            {
+
+            }
             return View(id);
         }
 

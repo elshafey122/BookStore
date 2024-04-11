@@ -4,6 +4,7 @@ using Ecommerce.Repositories.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommerce.Repositories.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240410133050_addRoleToApplicationUser")]
+    partial class addRoleToApplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,24 +96,6 @@ namespace Ecommerce.Repositories.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Companies");
-                });
-
-            modelBuilder.Entity("Ecommerce.Model.Models.CoverType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("coverTypes");
                 });
 
             modelBuilder.Entity("Ecommerce.Model.Models.OrderDetails", b =>
@@ -233,9 +218,6 @@ namespace Ecommerce.Repositories.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CoverTypeId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -275,7 +257,6 @@ namespace Ecommerce.Repositories.Migrations
                             Id = 1,
                             Author = "Billy Spark",
                             CategoryId = 1,
-                            CoverTypeId = 0,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "SWD9999001",
                             ListPrice = 99.0,
@@ -289,7 +270,6 @@ namespace Ecommerce.Repositories.Migrations
                             Id = 2,
                             Author = "Nancy Hoover",
                             CategoryId = 1,
-                            CoverTypeId = 0,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "CAW777777701",
                             ListPrice = 40.0,
@@ -303,7 +283,6 @@ namespace Ecommerce.Repositories.Migrations
                             Id = 3,
                             Author = "Julian Button",
                             CategoryId = 1,
-                            CoverTypeId = 0,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "RITO5555501",
                             ListPrice = 55.0,
@@ -317,7 +296,6 @@ namespace Ecommerce.Repositories.Migrations
                             Id = 4,
                             Author = "Abby Muscles",
                             CategoryId = 2,
-                            CoverTypeId = 0,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "WS3333333301",
                             ListPrice = 70.0,
@@ -331,7 +309,6 @@ namespace Ecommerce.Repositories.Migrations
                             Id = 5,
                             Author = "Ron Parker",
                             CategoryId = 2,
-                            CoverTypeId = 0,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "SOTJ1111111101",
                             ListPrice = 30.0,
@@ -345,7 +322,6 @@ namespace Ecommerce.Repositories.Migrations
                             Id = 6,
                             Author = "Laura Phantom",
                             CategoryId = 3,
-                            CoverTypeId = 0,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "FOT000000001",
                             ListPrice = 25.0,
