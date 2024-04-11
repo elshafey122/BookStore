@@ -1,4 +1,4 @@
-## It is a BookStore application that allows customers to view and purchase books, and provides an admin panel for managing products, categories, cover types, and orders.
+## It is a BookStore application using n-tier architecture that allows customers to view and purchase books, and provides an admin panel for managing products, categories, cover types, and orders.
 
 ## Customer Views:
 
