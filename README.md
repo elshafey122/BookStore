@@ -14,7 +14,7 @@ Order Placement: Customers can seamlessly apply orders for their selected books,
 
 Payment Handling: Secure payment processing ensures safe and reliable transactions for customers.
 
-##Admin Panel:
+## Admin Panel:
 
 Product Management: Admins have full control over the store's inventory, with options to add, edit, or delete books as needed.
 
