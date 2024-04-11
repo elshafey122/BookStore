@@ -26,10 +26,17 @@ Order Management: A comprehensive overview of all orders and their statuses enab
 
 ## technologies:
 c# 
+
 sqlserver 
+
 Ef
+
 asp.net mvc
+
 html
+
 css 
+
 js
-bootstrab
+
+bootstrap
